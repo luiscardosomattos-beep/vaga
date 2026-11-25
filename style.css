@@ -1,0 +1,187 @@
+/* Tema Glass — PrimeiroPasso */
+:root {
+  color-scheme: dark;
+  --ink: #f8f4ff;
+  --muted: #d0c5e1;
+  --line: #e1c8ff38;
+  --accent: #6033c6;
+  --paper: #211632;
+  --bg: #130d21;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 13% 20%, #7245ac88, transparent 46%),
+    radial-gradient(ellipse at 85% 12%, #4664ba72, transparent 48%),
+    radial-gradient(ellipse at 77% 85%, #ad4d8a64, transparent 47%),
+    linear-gradient(135deg, #171023, #252047 58%, #180e24);
+  background-attachment: fixed;
+}
+
+.layout > aside,
+main > header,
+.carousel,
+.filters,
+.list,
+.detail,
+dialog {
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, #44335ce8, #1b142bf5);
+  box-shadow:
+    inset 0 1px 0 #ffffff20,
+    0 16px 32px #0b071a40;
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .layout > aside,
+  main > header,
+  .carousel,
+  .filters,
+  .list,
+  .detail,
+  dialog {
+    background: linear-gradient(145deg, #55447372, #1c142ca8);
+    backdrop-filter: blur(18px) saturate(135%);
+  }
+}
+
+.layout > aside {
+  border-width: 0 1px 0 0;
+}
+
+main > header {
+  padding: clamp(14px, 3vw, 24px);
+  border-radius: 17px;
+}
+
+.logo {
+  border: 1px solid #f5d7ff69;
+  background: linear-gradient(145deg, #f6c7f9, #bfa2ff);
+  color: #2b1348;
+  box-shadow: 0 3px 18px #cc96ff50;
+}
+
+.nav-button {
+  color: var(--muted);
+}
+
+.nav-button:hover,
+.nav-button[aria-current] {
+  border-color: #d8baff64;
+  background: linear-gradient(135deg, #b991ff38, #8e60dc26);
+  color: var(--ink);
+}
+
+.warp-card {
+  border-color: #e8d2ff55;
+  background:
+    radial-gradient(ellipse at 10% 130%, var(--glow, #674bc4), transparent 78%),
+    linear-gradient(135deg, #ffffff20, #ffffff05);
+  box-shadow: inset 0 1px 0 #ffffff30;
+}
+
+.carousel-controls button,
+.btn.light {
+  border-color: var(--line);
+  background: #ffffff13;
+  color: var(--ink);
+}
+
+.btn {
+  border-color: #d4b5ff50;
+  box-shadow: inset 0 1px 0 #ffffff24;
+}
+
+.btn:hover,
+.carousel-controls button:hover {
+  filter: brightness(1.18);
+}
+
+.btn.danger {
+  border-color: #ffaaa955;
+  background: #632c45;
+  color: #fff1f2;
+}
+
+input,
+select,
+textarea {
+  border-color: #d8baff55;
+  background: #150e2490;
+  color: var(--ink);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #c6b8d6;
+}
+
+select option {
+  background: #211632;
+  color: var(--ink);
+}
+
+.item {
+  border-color: #e7d5ff20;
+  background: #ffffff09;
+  color: var(--ink);
+}
+
+.item:hover {
+  border-color: #ddbdff55;
+  background: #ffffff16;
+}
+
+.item[aria-current] {
+  border-color: #d3adff81;
+  background: linear-gradient(120deg, #af82f842, #a687f51c);
+}
+
+.avatar,
+.item:nth-child(even) .avatar {
+  border: 1px solid #ead3ff40;
+  background: linear-gradient(135deg, #dbc1ff, #a98de5);
+  color: #28163f;
+}
+
+.detail-head {
+  border: 1px solid #e7ccff36;
+  background: linear-gradient(130deg, #c399ff29, #ffffff09);
+}
+
+.tag {
+  border: 1px solid #dec0ff35;
+  background: #b592ed24;
+  color: #f4e7ff;
+}
+
+.tag.status {
+  border-color: #8ee8bf52;
+  background: #26785559;
+  color: #d1ffe9;
+}
+
+dialog::backdrop {
+  background: #0d071bb8;
+  backdrop-filter: blur(5px);
+}
+
+#notice {
+  border: 1px solid var(--line);
+  background: #322147;
+}
+
+:focus-visible {
+  outline-color: #e1c4ff;
+}
+
+@media (max-width: 700px) {
+  .layout > aside {
+    border-width: 0 0 1px;
+  }
+
+  body {
+    background-attachment: scroll;
+  }
+}

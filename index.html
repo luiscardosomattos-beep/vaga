@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PrimeiroPasso | Jovem Aprendiz</title>
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    color-scheme: light;
+    --ink: #251d39;
+    --muted: #625a75;
+    --line: #e1dbea;
+    --accent: #5735bd;
+    --paper: #fff;
+    --bg: #f7f5fb;
+  }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 Inter, system-ui, sans-serif; }
+  h1, h2, h3, p { margin: 0; }
+  h1, h2, h3 { line-height: 1.12; letter-spacing: -.04em; }
+  h1 { font-size: clamp(1.95rem, 4vw, 3.1rem); }
+  h2 { font-size: clamp(1.5rem, 3.5vw, 2.3rem); }
+  h3 { font-size: 1.05rem; }
+  button, input, select, textarea { font: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid #9168ef; outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .muted { color: var(--muted); }
+  .layout { min-height: 100vh; display: grid; grid-template-columns: 216px minmax(0, 1fr); }
+  aside { display: flex; flex-direction: column; gap: 25px; background: #211731; color: #fff; padding: 22px 14px; }
+  .brand { display: flex; align-items: center; gap: 9px; font-size: 20px; font-weight: 850; letter-spacing: -.055em; }
+  .logo { display: grid; place-items: center; width: 34px; height: 34px; background: #ffcab5; color: #352149; border-radius: 10px; }
+  nav { display: grid; gap: 4px; }
+  .nav-button {
+    display: flex; align-items: center; justify-content: space-between; gap: 7px;
+    border: 1px solid transparent; border-radius: 9px; padding: 8px 10px;
+    background: transparent; color: #e6dcf3; text-align: left; font-weight: 650;
+  }
+  .nav-button[aria-current] { background: #403052; color: #fff; border-color: #675080; }
+  .nav-count { background: #ffffff20; border-radius: 20px; padding: 1px 7px; font-size: .76rem; }
+  aside p { margin-top: auto; color: #e0d4ee; font-size: .79rem; }
+  main { width: 100%; max-width: 1430px; padding: clamp(15px, 3vw, 36px); }
+  .row, .actions, .tags { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+  .row { justify-content: space-between; }
+  header { margin-bottom: 16px; }
+  header p { margin-top: 5px; }
+  .btn { border: 1px solid transparent; border-radius: 9px; padding: 8px 12px; background: var(--accent); color: #fff; font-weight: 750; }
+  .light { background: #fff; border-color: var(--line); color: #4c2ba8; }
+  .danger { background: #fff2ef; border-color: #f2d2cd; color: #8c2e26; }
+  .carousel {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px;
+    align-items: center; margin-bottom: 14px; padding: 10px;
+    border-radius: 16px; background: #241736; color: white;
+  }
+  .stage { min-width: 0; perspective: 720px; }
+  .warp-card {
+    width: 100%; min-height: 99px; display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px;
+    padding: 13px 16px; border: 1px solid #ffffff45; border-radius: 12px;
+    background: radial-gradient(ellipse at 9% 125%, var(--glow, #6246b3), transparent 78%), #392850;
+    color: #fff; text-align: left;
+  }
+  .warp-number { font-size: clamp(2.25rem, 6vw, 3.8rem); font-weight: 850; line-height: 1; letter-spacing: -.07em; }
+  .warp-copy { display: grid; gap: 2px; }
+  .warp-copy strong { font-size: 1.05rem; }
+  .warp-copy small { color: #f4eaff; }
+  .carousel-controls { display: flex; gap: 4px; }
+  .carousel-controls button { width: 37px; height: 38px; border: 1px solid #ffffff58; border-radius: 8px; background: #443058; color: white; }
+  .filters {
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 9px;
+    padding: 12px; margin-bottom: 13px; background: white; border: 1px solid var(--line); border-radius: 13px;
+  }
+  label { display: grid; gap: 4px; font-weight: 700; font-size: .88rem; }
+  input, select, textarea { width: 100%; min-width: 0; padding: 8px 10px; background: white; border: 1px solid #bcb3ce; border-radius: 8px; color: var(--ink); }
+  textarea { resize: vertical; }
+  .split { display: grid; grid-template-columns: minmax(190px, 1fr) minmax(235px, 1.5fr); gap: 12px; align-items: start; }
+  .list, .detail { background: white; border: 1px solid var(--line); border-radius: 14px; min-width: 0; }
+  .list { padding: 9px; }
+  .list-head { min-height: 38px; padding: 0 4px 7px; font-size: .88rem; }
+  .items { display: grid; gap: 4px; }
+  .item {
+    display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: start; gap: 8px;
+    width: 100%; padding: 9px 7px; border: 1px solid transparent; border-bottom-color: var(--line);
+    border-radius: 9px; background: white; color: var(--ink); text-align: left;
+  }
+  .item[aria-current] { background: #f1ebff; border-color: #cabaf1; }
+  .avatar { display: grid; place-items: center; height: 36px; background: #ffe9dc; color: #75442e; font-weight: 850; border-radius: 9px; }
+  .item:nth-child(even) .avatar { background: #eae2fc; color: #51338b; }
+  .item strong, .item small { display: block; overflow-wrap: anywhere; }
+  .item small { margin-top: 2px; color: var(--muted); }
+  .detail { position: sticky; top: 10px; display: grid; gap: 13px; min-height: 275px; padding: clamp(14px, 3vw, 23px); overflow-wrap: anywhere; }
+  .detail-head { display: grid; gap: 6px; padding: 14px; border-radius: 10px; background: #f4effe; }
+  .tag { padding: 3px 8px; border-radius: 6px; background: #f0eafa; color: #4d386d; font-size: .8rem; font-weight: 720; }
+  .status { background: #e4f5eb; color: #225b40; }
+  .description { white-space: pre-wrap; }
+  .empty { padding: 13px 6px; }
+  .back, .mobile-note { display: none; }
+  dialog { width: min(520px, calc(100% - 28px)); max-height: calc(100% - 28px); border: 1px solid var(--line); border-radius: 15px; padding: 18px; color: var(--ink); }
+  dialog::backdrop { background: #211637a0; }
+  form, #modal-body { display: grid; gap: 11px; }
+  #modal-body { margin-top: 13px; }
+  #notice { position: fixed; right: 12px; bottom: 12px; max-width: calc(100% - 24px); padding: 9px 13px; border-radius: 9px; background: #211731; color: white; }
+  #notice:empty { display: none; }
+
+  @media (max-width: 880px) {
+    .layout { grid-template-columns: 158px minmax(0, 1fr); }
+    aside { padding-inline: 9px; }
+  }
+  @media (max-width: 700px) {
+    .layout { display: block; }
+    aside { gap: 8px; padding: 10px 13px; }
+    aside p { display: none; }
+    nav { display: flex; flex-wrap: wrap; }
+    .nav-button { padding: 6px 8px; }
+    .mobile-note { display: block; margin-top: 12px; font-size: .8rem; }
+  }
+  @media (max-width: 500px) {
+    .filters { grid-template-columns: 1fr 1fr; }
+    .filters label:first-child { grid-column: 1 / -1; }
+    .carousel { grid-template-columns: minmax(0, 1fr); }
+    .carousel-controls { justify-content: flex-end; }
+    .split { display: block; }
+    .detail { position: static; display: none; }
+    .split[data-detail="true"] .detail { display: grid; }
+    .split[data-detail="true"] .list { display: none; }
+    .back { display: inline-block; justify-self: start; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside>
+    <div class="brand"><span class="logo" aria-hidden="true">↗</span> PrimeiroPasso</div>
+    <nav id="nav" aria-label="Seções do site"></nav>
+    <p>Vagas fictícias e candidaturas de teste.</p>
+  </aside>
+
+  <main>
+    <header class="row">
+      <div><h1 id="title"></h1><p class="muted" id="subtitle"></p></div>
+      <button class="btn" id="publish" type="button">+ Publicar vaga</button>
+    </header>
+
+    <section class="carousel" id="carousel" aria-label="Atalhos do painel">
+      <div class="stage">
+        <button class="warp-card" id="warp-card" type="button">
+          <span class="warp-number" id="warp-number"></span>
+          <span class="warp-copy"><strong id="warp-title"></strong><small id="warp-caption"></small></span>
+          <span aria-hidden="true">↗</span>
+        </button>
+      </div>
+      <div class="carousel-controls">
+        <button id="previous" type="button" aria-label="Atalho anterior">←</button>
+        <button id="next" type="button" aria-label="Próximo atalho">→</button>
+      </div>
+    </section>
+
+    <section class="filters" id="filters" aria-label="Filtros de vagas">
+      <label>Buscar vaga<input id="search" type="search" placeholder="Cargo, empresa ou área"></label>
+      <label>Cidade<select id="city"></select></label>
+      <label>Modalidade<select id="mode"></select></label>
+    </section>
+
+    <div class="split" id="split" data-detail="false">
+      <section class="list" aria-label="Resultados">
+        <div class="row list-head">
+          <span class="muted" id="count" role="status"></span>
+          <button class="btn light" id="clear" type="button" hidden>Limpar filtros</button>
+        </div>
+        <div class="items" id="items"></div>
+      </section>
+      <section class="detail" id="detail" aria-label="Detalhes da vaga"></section>
+    </div>
+    <p class="muted mobile-note">Vagas fictícias e candidaturas de teste.</p>
+  </main>
+</div>
+
+<dialog id="modal" aria-labelledby="modal-title">
+  <div class="row">
+    <h2 id="modal-title"></h2>
+    <button class="btn light" id="close" type="button">Fechar</button>
+  </div>
+  <div id="modal-body"></div>
+</dialog>
+<div id="notice" role="status"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const modes = ["Presencial", "Híbrido", "Remoto"];
+const demoJobs = [
+  ["Aprendiz em suporte de TI", "Nuvem Digital", "Brasília", "Híbrido", "Tecnologia", "Acompanhe chamados de suporte e ajude a preparar guias para os usuários."],
+  ["Aprendiz administrativo", "Horizonte Serviços", "Brasília", "Presencial", "Administração", "Apoie a organização de documentos, a atualização de planilhas e o atendimento interno."],
+  ["Aprendiz de comunicação", "Estúdio Prisma", "São Paulo", "Remoto", "Comunicação", "Ajude a organizar o calendário de publicações e a revisar materiais para canais digitais."],
+  ["Aprendiz de atendimento", "Estação Varejo", "São Paulo", "Presencial", "Atendimento", "Apoie o atendimento ao público e a organização da loja."],
+  ["Aprendiz de logística", "Ponto Logística", "Goiânia", "Presencial", "Operações", "Acompanhe a conferência de pedidos e ajude a atualizar registros de estoque."]
+].map(([title, company, city, mode, area, description], index) => ({
+  id: `demo-${index}`, title, company, city, mode, area, description, closed: false
+}));
+
+const views = {
+  explore: ["Explorar vagas", "Encontre sua primeira oportunidade de trabalho."],
+  saved: ["Vagas salvas", "Reveja as oportunidades que você favoritou."],
+  applications: ["Candidaturas", "Acompanhe suas candidaturas de teste."],
+  company: ["Minhas vagas", "Publique, edite e gerencie suas vagas de teste."]
+};
+
+const storageKey = "primeiropasso-split-preview";
+let state = { jobs: [], saved: [], applications: [] };
+try {
+  const stored = JSON.parse(localStorage.getItem(storageKey));
+  if (["jobs", "saved", "applications"].every(key => Array.isArray(stored?.[key]))) state = stored;
+} catch {}
+
+const allJobs = () => [...state.jobs, ...demoJobs];
+const application = job => state.applications.find(record => record.id === job.id);
+const normalize = text => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const shortcuts = [
+  { view: "explore", title: "Vagas abertas", caption: "Ver todas as oportunidades", glow: "#674bc4", count: () => allJobs().filter(job => !job.closed).length },
+  { view: "saved", title: "Vagas salvas", caption: "Rever meus favoritos", glow: "#a0437d", count: () => state.saved.length },
+  { view: "applications", title: "Candidaturas ativas", caption: "Abrir meu histórico", glow: "#21766b", count: () => state.applications.filter(record => record.status === "Registrada").length },
+  { view: "company", title: "Vagas publicadas", caption: "Gerenciar minhas vagas", glow: "#975326", count: () => state.jobs.length }
+];
+
+let view = "explore";
+let selectedId = null;
+let mobileDetail = false;
+let shortcutIndex = 0;
+let animation;
+let noticeTimer;
+
+function element(tag, text = "", className = "") {
+  const node = document.createElement(tag);
+  node.textContent = text;
+  node.className = className;
+  return node;
+}
+
+function button(text, handler, className = "btn") {
+  const node = element("button", text, className);
+  node.type = "button";
+  node.addEventListener("click", handler);
+  return node;
+}
+
+function save(message) {
+  try { localStorage.setItem(storageKey, JSON.stringify(state)); }
+  catch { message += " Esta alteração fica disponível até recarregar a página."; }
+  $("notice").textContent = message;
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => { $("notice").textContent = ""; }, 4200);
+}
+
+function fillSelect(select, values, placeholder) {
+  const previous = select.value;
+  select.replaceChildren(new Option(placeholder, ""), ...values.map(value => new Option(value, value)));
+  if (values.includes(previous)) select.value = previous;
+}
+
+function refreshCities() {
+  const cities = [...new Set(allJobs().map(job => job.city))].sort((a, b) => a.localeCompare(b, "pt-BR"));
+  fillSelect($("city"), cities, "Todas as cidades");
+}
+
+function resetFilters() {
+  for (const id of ["search", "city", "mode"]) $(id).value = "";
+}
+
+function focusNav() {
+  $("nav").querySelector("[aria-current]")?.focus();
+}
+
+function changeView(next) {
+  view = next;
+  selectedId = null;
+  mobileDetail = false;
+  render();
+  focusNav();
+}
+
+function renderShortcut() {
+  const shortcut = shortcuts[shortcutIndex];
+  $("warp-number").textContent = shortcut.count();
+  $("warp-title").textContent = shortcut.title;
+  $("warp-caption").textContent = shortcut.caption;
+  $("warp-card").style.setProperty("--glow", shortcut.glow);
+  $("warp-card").setAttribute("aria-label", `${shortcut.title}: ${shortcut.count()}. ${shortcut.caption}. Atalho ${shortcutIndex + 1} de ${shortcuts.length}.`);
+}
+
+function moveShortcut(direction) {
+  shortcutIndex = (shortcutIndex + direction + shortcuts.length) % shortcuts.length;
+  renderShortcut();
+  animation?.cancel();
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches && $("warp-card").animate) {
+    animation = $("warp-card").animate([
+      { transform: `translateX(${direction * 9}px) rotateY(${direction * 25}deg)`, opacity: .45 },
+      { transform: "translateX(0) rotateY(0)", opacity: 1 }
+    ], { duration: 260, easing: "ease-out" });
+  }
+  $("notice").textContent = `${shortcuts[shortcutIndex].title}: ${shortcuts[shortcutIndex].count()}`;
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => { $("notice").textContent = ""; }, 2600);
+}
+
+function render() {
+  $("title").textContent = views[view][0];
+  $("subtitle").textContent = views[view][1];
+  renderShortcut();
+
+  const counts = { saved: state.saved.length, applications: state.applications.length, company: state.jobs.length };
+  $("nav").replaceChildren(...Object.entries(views).map(([key, [label]]) => {
+    const item = button(label, () => changeView(key), "nav-button");
+    if (view === key) item.setAttribute("aria-current", "page");
+    if (key in counts) item.append(element("span", String(counts[key]), "nav-count"));
+    return item;
+  }));
+
+  const canFilter = view === "explore" || view === "saved";
+  const words = normalize($("search").value.trim()).split(/\s+/).filter(Boolean);
+  const city = $("city").value;
+  const mode = $("mode").value;
+  const hasFilters = Boolean(words.length || city || mode);
+  $("filters").hidden = !canFilter;
+  $("clear").hidden = !canFilter || !hasFilters;
+
+  const visible = allJobs().filter(job => {
+    if (view === "company") return state.jobs.includes(job);
+    if (view === "applications") return Boolean(application(job));
+    if (view === "saved" ? !state.saved.includes(job.id) : job.closed) return false;
+    const searchable = normalize([job.title, job.company, job.city, job.area, job.mode].join(" "));
+    return words.every(word => searchable.includes(word)) && (!city || job.city === city) && (!mode || job.mode === mode);
+  });
+
+  if (view === "applications") visible.sort((a, b) => application(b).time - application(a).time);
+  if (!visible.some(job => job.id === selectedId)) {
+    selectedId = visible[0]?.id ?? null;
+    mobileDetail = false;
+  }
+
+  const noun = view === "applications" ? "candidatura" : "vaga";
+  $("count").textContent = `${visible.length} ${noun}${visible.length === 1 ? "" : "s"}`;
+  $("items").replaceChildren(...visible.map(makeItem));
+  if (!visible.length) {
+    const messages = {
+      explore: "Nenhuma vaga corresponde à busca.",
+      saved: hasFilters ? "Nenhuma vaga salva corresponde à busca." : "Você ainda não salvou vagas.",
+      applications: "Você ainda não registrou candidaturas.",
+      company: "Você ainda não publicou vagas."
+    };
+    $("items").append(element("p", messages[view], "muted empty"));
+  }
+
+  $("split").dataset.detail = String(mobileDetail);
+  renderDetail(visible.find(job => job.id === selectedId));
+}
+
+function makeItem(job) {
+  const item = button("", () => {
+    selectedId = job.id;
+    mobileDetail = true;
+    render();
+    if (matchMedia("(max-width: 500px)").matches) $("back")?.focus();
+    else $(`item-${job.id}`)?.focus();
+  }, "item");
+
+  item.id = `item-${job.id}`;
+  if (job.id === selectedId) item.setAttribute("aria-current", "true");
+  const initials = job.company.split(/\s+/).slice(0, 2).map(word => word[0]).join("").toUpperCase();
+  const avatar = element("span", initials, "avatar");
+  avatar.setAttribute("aria-hidden", "true");
+
+  const summary = element("span");
+  const status = view === "applications" ? application(job).status : job.closed ? "Encerrada" : "";
+  const metadata = [job.company, job.mode, status].filter(Boolean).join(" · ");
+  summary.append(element("strong", job.title), element("small", metadata));
+  item.append(avatar, summary);
+  return item;
+}
+
+function focusDetailAction() {
+  $("detail").querySelector(".actions button")?.focus();
+}
+
+function renderDetail(job) {
+  const detail = $("detail");
+  detail.replaceChildren();
+  if (!job) {
+    detail.append(element("p", "Os detalhes da vaga aparecem aqui.", "muted"));
+    return;
+  }
+
+  const back = button("← Voltar à lista", () => {
+    mobileDetail = false;
+    $("split").dataset.detail = "false";
+    $(`item-${job.id}`)?.focus();
+  }, "btn light back");
+  back.id = "back";
+
+  const heading = element("div", "", "detail-head");
+  heading.append(element("p", job.company, "muted"), element("h2", job.title));
+
+  const tags = element("div", "", "tags");
+  for (const value of [job.city, job.mode, job.area]) tags.append(element("span", value, "tag"));
+  if (job.closed) tags.append(element("span", "Vaga encerrada", "tag"));
+  const record = application(job);
+  if (record) tags.append(element("span", `Candidatura ${record.status.toLowerCase()}`, "tag status"));
+
+  const actions = element("div", "", "actions");
+  if (view === "company") {
+    actions.append(button("Editar vaga", () => editJob(job)));
+    actions.append(button(job.closed ? "Reabrir vaga" : "Encerrar vaga", () => {
+      job.closed = !job.closed;
+      save(job.closed ? "Vaga encerrada." : "Vaga reaberta.");
+      render();
+      focusDetailAction();
+    }, "btn light"));
+  } else {
+    if (record?.status === "Registrada") {
+      actions.append(button("Retirar candidatura", () => confirmApplication(job, true), "btn danger"));
+    } else if (!job.closed) {
+      actions.append(button("Candidatar-me", () => confirmApplication(job, false)));
+    }
+
+    const saved = state.saved.includes(job.id);
+    const favorite = button(saved ? "★ Salva" : "☆ Salvar", () => {
+      state.saved = saved ? state.saved.filter(id => id !== job.id) : [...state.saved, job.id];
+      save(saved ? "Vaga removida das salvas." : "Vaga salva.");
+      render();
+      if (saved && view === "saved") focusNav();
+      else $("favorite")?.focus();
+    }, "btn light");
+    favorite.id = "favorite";
+    favorite.setAttribute("aria-pressed", String(saved));
+    actions.append(favorite);
+  }
+
+  detail.append(back, heading, tags, element("h3", "Sobre a vaga"),
+    element("p", job.description, "description"), actions);
+}
+
+function openModal(title, ...children) {
+  $("modal-title").textContent = title;
+  $("modal-body").replaceChildren(...children);
+  $("modal").showModal();
+}
+
+function confirmApplication(job, withdraw) {
+  openModal(
+    withdraw ? "Retirar candidatura?" : "Confirmar candidatura",
+    element("p", `${job.title} · ${job.company}`),
+    element("p", "Esta é uma candidatura de teste, registrada apenas neste navegador.", "muted"),
+    button(withdraw ? "Confirmar retirada" : "Registrar candidatura de teste", () => {
+      state.applications = state.applications.filter(record => record.id !== job.id);
+      state.applications.unshift({ id: job.id, status: withdraw ? "Retirada" : "Registrada", time: Date.now() });
+      save(withdraw ? "Candidatura retirada." : "Candidatura registrada.");
+      $("modal").close();
+      render();
+      focusDetailAction();
+    }, withdraw ? "btn danger" : "btn")
+  );
+}
+
+function editJob(job) {
+  const form = element("form");
+  const fields = [
+    ["title", "Cargo", 90],
+    ["company", "Empresa fictícia", 75],
+    ["city", "Cidade", 55],
+    ["mode", "Modalidade", modes],
+    ["area", "Área", 50],
+    ["description", "Descrição", 700]
+  ];
+
+  for (const [name, label, config] of fields) {
+    const wrapper = element("label", label);
+    const tag = Array.isArray(config) ? "select" : name === "description" ? "textarea" : "input";
+    const input = element(tag);
+    input.name = name;
+    input.required = true;
+    if (Array.isArray(config)) fillSelect(input, config, "Selecione");
+    else input.maxLength = config;
+    if (tag === "textarea") input.rows = 4;
+    input.value = job?.[name] ?? "";
+    input.addEventListener("input", () => input.setCustomValidity(""));
+    wrapper.append(input);
+    form.append(wrapper);
+  }
+
+  const submit = element("button", job ? "Salvar alterações" : "Publicar vaga de teste", "btn");
+  submit.type = "submit";
+  form.append(submit);
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    const data = {};
+    for (const [name, value] of new FormData(form)) {
+      data[name] = value.trim();
+      if (!data[name]) {
+        const input = form.elements.namedItem(name);
+        input.setCustomValidity("Preencha este campo.");
+        input.reportValidity();
+        return;
+      }
+    }
+
+    const knownCity = allJobs().find(item => normalize(item.city) === normalize(data.city));
+    if (knownCity) data.city = knownCity.city;
+    const id = job?.id ?? (globalThis.crypto?.randomUUID?.() ?? `vaga-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    if (job) Object.assign(job, data);
+    else state.jobs.unshift({ ...data, id, closed: false });
+
+    save(job ? "Alterações salvas." : "Vaga publicada nesta demonstração.");
+    refreshCities();
+    $("modal").close();
+    view = "company";
+    selectedId = id;
+    mobileDetail = true;
+    render();
+    focusDetailAction();
+  });
+
+  openModal(job ? "Editar vaga" : "Publicar vaga de teste", form);
+}
+
+$("previous").addEventListener("click", () => moveShortcut(-1));
+$("next").addEventListener("click", () => moveShortcut(1));
+$("carousel").addEventListener("keydown", event => {
+  if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+  event.preventDefault();
+  moveShortcut(event.key === "ArrowLeft" ? -1 : 1);
+});
+$("warp-card").addEventListener("click", () => {
+  const target = shortcuts[shortcutIndex].view;
+  if (target === "explore" || target === "saved") resetFilters();
+  changeView(target);
+});
+$("publish").addEventListener("click", () => editJob());
+$("close").addEventListener("click", () => $("modal").close());
+$("clear").addEventListener("click", () => {
+  resetFilters();
+  render();
+  $("search").focus();
+});
+$("search").addEventListener("input", render);
+for (const id of ["city", "mode"]) $(id).addEventListener("change", render);
+
+fillSelect($("mode"), modes, "Todas as modalidades");
+refreshCities();
+render();
+</script>
+</body>
+</html>
